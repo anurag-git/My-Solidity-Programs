@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.0; 
 
 library Strings {
     function concat(string _base, string _value) internal pure returns (string) {

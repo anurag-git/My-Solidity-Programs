@@ -39,7 +39,7 @@ library Strings {
             return 1;
     }
     
-    function compareStrings (string a, string b) public pure returns (bool) {
+    function compareStrings (string a, string b) internal pure returns (bool) {
        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }
 }

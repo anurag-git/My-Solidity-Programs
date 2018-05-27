@@ -42,4 +42,19 @@ library Strings {
     function compareStrings (string a, string b) internal pure returns (bool) {
        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }
+    
+    function strrev(string _strToReverse) internal pure returns (string) {
+        bytes memory _strBytes = bytes(_strToReverse);
+        assert(_strBytes.length > 0);
+        
+        string memory _tmpStr = new string(_strBytes.length);
+        bytes memory _strToReturn = bytes(_tmpStr);
+        uint j=0;
+        
+        for(uint i=_strBytes.length;i>0;i--) {
+            _strToReturn[i-1] = _strBytes[j++];
+        }
+        
+        return string(_strToReturn);
+    } 
 }

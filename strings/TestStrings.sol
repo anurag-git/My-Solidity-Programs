@@ -15,7 +15,7 @@ contract TestStrings {
     }
 
     function testStrcmp(string _base) public view returns (string) {
-        uint status = str1.strcmp(_base);
+        int8 status = str1.strcmp(_base);
         if(status == 0)
             return "strings are same";
         else

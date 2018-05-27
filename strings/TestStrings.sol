@@ -29,4 +29,8 @@ contract TestStrings {
         else
             return "strings are different";
     }
+    
+    function testStringReverse(string _base) public pure returns (string) {
+        return _base.strrev();
+    }    
 }

@@ -22,23 +22,23 @@ library Strings {
         return string(_newValue);
     }
     
-    function strcmp(string _firstStr, string _secondStr) internal pure returns (uint) {
+    function strcmp(string _firstStr, string _secondStr) internal pure returns (int8) {
         bytes memory _firstBytes = bytes(_firstStr);
         bytes memory _secondBytes = bytes(_secondStr);
         
-        uint i;
+        int8 flag = 0;
         
-        for(i=0;i<_firstBytes.length;i++) {
-            if(_firstBytes[i] == _secondBytes[i])
-                continue;
+        if(_firstBytes.length != _secondBytes.length)
+            flag = 1;
+        
+        for(uint i=0;i<_firstBytes.length;i++) {
+            if(_firstBytes[i] != _secondBytes[i])
+                flag = 1;
         }
     
-        if(i == _secondBytes.length)
-            return 0;
-        else
-            return 1;
+        return flag;
     }
-    
+        
     function compareStrings (string a, string b) internal pure returns (bool) {
        return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }

@@ -25,7 +25,7 @@ contract Lottery {
     }
 
     function pickWinner() public restricted returns(address){
-        uint index = random() % players.length;
+        uint index = random() % getNoOfPlayers();
         players[index].transfer(address(this).balance);
         finalBalance = getAllBalances();
         address[] memory tempPlayers = new address[](index);
@@ -47,8 +47,8 @@ contract Lottery {
     }
     
     function getAllBalances() public view returns (uint[]) {
-        uint[] memory allBalances = new uint[](players.length);
-        for(uint i=0; i<players.length; i++) {
+        uint[] memory allBalances = new uint[](getNoOfPlayers());
+        for(uint i=0; i < getNoOfPlayers(); i++) {
             allBalances[i] = players[i].balance;
         }
         

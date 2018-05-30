@@ -11,12 +11,12 @@ contract Lottery {
     }
 
     function enter() public payable {
-        require(msg.value > .01 ether);
+        require(msg.value > 0.01 ether,"contribution should be more than 0.01 ether");
         players.push(msg.sender);
     }
 
     modifier restricted() {
-        require(msg.sender == manager);
+        require(msg.sender == manager,"Only contract creator can pick the winner");
         _;
     }
     
@@ -40,6 +40,10 @@ contract Lottery {
     
     function getBalance(address _addr) public view returns (uint) {
         return _addr.balance;
+    }
+    
+    function getContractBalance() public view returns (uint) {
+        return address(this).balance;
     }
     
     function getNoOfPlayers() public view returns (uint) {

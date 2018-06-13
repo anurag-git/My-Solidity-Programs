@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 contract Lottery {
     address public manager;
-    address[] public players;
+    address[] private players;
     
     uint[] private finalBalance;
 
@@ -16,7 +16,7 @@ contract Lottery {
     }
 
     modifier restricted() {
-        require(msg.sender == manager,"Only contract creator can pick the winner");
+        require(msg.sender == manager,"Only contract creator can call this functionality");
         _;
     }
     
@@ -34,32 +34,33 @@ contract Lottery {
         return tempPlayers[index]; // return address of winner
     }
 
-    function getPlayers() public view returns (address[]) {
+    function getPlayers() public restricted view returns (address[]) {
         return players;
     }
     
-    function getBalance(address _addr) public view returns (uint) {
+    function getBalance(address _addr) public restricted view returns (uint) {
         return _addr.balance;
     }
     
-    function getContractBalance() public view returns (uint) {
+    function getContractBalance() public restricted view returns (uint) {
         return address(this).balance;
     }
     
-    function getNoOfPlayers() public view returns (uint) {
+    function getNoOfPlayers() public restricted view returns (uint) {
         return players.length;
     }
     
-    function getAllBalances() public view returns (uint[]) {
-        uint[] memory allBalances = new uint[](getNoOfPlayers());
-        for(uint i=0; i < getNoOfPlayers(); i++) {
+    function getAllBalances() public restricted view returns (uint[]) {
+        uint noOfPlayers = getNoOfPlayers();
+        uint[] memory allBalances = new uint[](noOfPlayers);
+        for(uint i=0; i < noOfPlayers; i++) {
             allBalances[i] = players[i].balance;
         }
         
         return allBalances;
     }
     
-    function getFinalBalance() public view returns (uint[]) {
+    function getFinalBalance() public restricted view returns (uint[]) {
         return finalBalance;
     }
 }

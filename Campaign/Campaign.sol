@@ -116,7 +116,12 @@ contract Campaign {
     }
 
     modifier isContributor() {
-        require(contributors[msg.sender],"Only contributors can call this function");
+        require(msg.sender == manager,"Only contributors can call this function");
+        _;    
+    }
+    
+    modifier isContributorOrManager() {
+        require(msg.sender == manager || contributors[msg.sender],"Only contributors or manager can call this function");
         _;    
     }
     
@@ -189,13 +194,13 @@ contract Campaign {
         request.complete = true;
     }
 
-    function getSummary() public isContributor view returns (uint, uint, uint, uint, address) {
+    function getSummary() public isContributorOrManager view returns (uint, uint, uint, uint, address) {
         //emit GetSummary("summary created");
         return (minimumContribution,address(this).balance,requests.length,contributorsCount,manager);
         
     }
 
-	function getRequestDetails(uint index) public isContributor view returns 
+	function getRequestDetails(uint index) public isContributorOrManager view returns 
 	(string, string, string, address, uint, uint, uint,uint) {
 		ProjectRequest storage request = requests[index];
 		return (
@@ -210,23 +215,23 @@ contract Campaign {
 		    );
 	}
 
-    function getRequestsCount() public isContributor view returns (uint) {
+    function getRequestsCount() public isContributorOrManager view returns (uint) {
         return requests.length;
     }
     
-    function getContractBalance() public isContributor view returns (uint) {
+    function getContractBalance() public isContributorOrManager view returns (uint) {
         return address(this).balance;
     }
     
-    function getContributorList() public isContributor view returns (address[]) {
+    function getContributorList() public isContributorOrManager view returns (address[]) {
         return contributorList;
     }
     
-    function getContributorCount() public isContributor view returns(uint) {
+    function getContributorCount() public isContributorOrManager view returns(uint) {
         return contributorsCount;
     }
     
-    function getTotalContribution() public isContributor view returns(uint) {
+    function getTotalContribution() public isContributorOrManager view returns(uint) {
         return totalContribution;
     }
     

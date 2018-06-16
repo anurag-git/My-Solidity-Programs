@@ -96,7 +96,7 @@ contract Campaign {
         uint dateOfClosing;
         uint value;
         address recipient;
-		bool complete;
+	bool complete;
         uint approvalCount;
         mapping(address => bool) approvals;
     }
@@ -116,7 +116,7 @@ contract Campaign {
     }
 
     modifier isContributor() {
-        require(msg.sender == manager,"Only contributors can call this function");
+        require(contributors[msg.sender],"Only contributors can call this function");
         _;    
     }
     

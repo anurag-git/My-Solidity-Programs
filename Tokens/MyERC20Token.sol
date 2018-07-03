@@ -77,13 +77,15 @@ contract MyToken is ERC20Interface {
     address public owner;
     string private constant tokenName = "MyToken";
     string private constant symbolName = "ADT";
-    uint8 private constant decimalNumber = 2;
-    uint public constant totalTokens = 1000;
+    uint8 private constant decimalNumber = 0;
+    uint public constant totalTokens = 100;
     uint private constant totalTokenSupply = totalTokens * 10**uint(decimalNumber);
+    uint public tokensRemaining;
     
   constructor() public {
       owner = msg.sender;
       balances[owner] = totalTokenSupply;
+      tokensRemaining = totalTokenSupply;
   }
 
   function name() public pure returns (string) {
@@ -142,5 +144,31 @@ contract MyToken is ERC20Interface {
   
   function allowance(address _owner, address _spender) public view returns(uint) {
       return allowedAddresses[_owner][_spender];
-  }  
+  }
+
+
+// Code for Token sale by directly sending ethe rto contract
+event remaining(uint);
+
+  function() payable public {
+      uint amountPaid = msg.value; // in Wei
+      uint conversionRate;
+      if(tokensRemaining >= totalTokenSupply.div(2)){ // 1st 50%
+          conversionRate = 2 ether;
+      } else {
+          conversionRate = 4 ether;
+      }
+      
+      require(amountPaid >= conversionRate, "Amount Paid is less than minimum token value of 2 ethers!!!");
+      
+      uint tokenToTransfer = amountPaid.div(conversionRate);
+      uint amountToReturn = amountPaid % conversionRate;
+      
+      balances[msg.sender] = balances[msg.sender].add(tokenToTransfer); // tokens added to balances
+      
+      tokensRemaining = tokensRemaining.sub(tokenToTransfer); // tokesn deleted from remaining
+      
+      msg.sender.transfer(amountToReturn); // return unused weis
+      emit remaining(amountToReturn);
+  }
 }

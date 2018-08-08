@@ -1,0 +1,1 @@
+contract C{address O;uint D;address A;uint X;constructor(address a){O=msg.sender;A=a;X=5;}function b() payable{require(msg.sender==O);D+=msg.value;}function c(){require(block.number%105 == 0);X=block.number-1;uint t=(X%100)*D/100;A.transfer(t);D-=t;}}

@@ -88,15 +88,15 @@ contract MyToken is ERC20Interface {
       tokensRemaining = totalTokenSupply;
   }
 
-  function name() public pure returns (string) {
+  function name() public view returns (string) {
     return tokenName;
   }
 
-  function symbol() public pure returns (string) {
+  function symbol() public view returns (string) {
     return symbolName;
   }
 
-  function decimals() public pure returns (uint8) {
+  function decimals() public view returns (uint8) {
     return decimalNumber;
   }
 
@@ -147,7 +147,7 @@ contract MyToken is ERC20Interface {
   }
 
 
-// Code for Token sale by directly sending ethe rto contract
+// Code for Token sale by directly sending ether to contract
 event remaining(uint);
 
   function() payable public {
@@ -166,7 +166,7 @@ event remaining(uint);
       
       balances[msg.sender] = balances[msg.sender].add(tokenToTransfer); // tokens added to balances
       
-      tokensRemaining = tokensRemaining.sub(tokenToTransfer); // tokesn deleted from remaining
+      tokensRemaining = tokensRemaining.sub(tokenToTransfer); // tokens deleted from remaining
       
       msg.sender.transfer(amountToReturn); // return unused weis
       emit remaining(amountToReturn);

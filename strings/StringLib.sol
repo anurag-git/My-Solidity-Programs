@@ -1,7 +1,7 @@
 pragma solidity ^0.4.0; 
 
 library Strings {
-    function concat(string _base, string _value) internal pure returns (string) {
+    function concat1(string _base, string _value) internal pure returns (string) {
         bytes memory _baseBytes = bytes(_base);
         bytes memory _valueBytes = bytes(_value);
         
@@ -14,12 +14,17 @@ library Strings {
         for(i=0;i<_baseBytes.length;i++) {
             _newValue[j++] = _baseBytes[i];
         }
+    
         
         for(i=0;i<_valueBytes.length;i++) {
             _newValue[j++] = _valueBytes[i];
         }
         
         return string(_newValue);
+    }
+    
+    function concat2(string _base, string _value) internal pure returns (string) {
+        return string(abi.encodePacked(_base, " ", _value));
     }
     
     function strcmp(string _firstStr, string _secondStr) internal pure returns (int8) {

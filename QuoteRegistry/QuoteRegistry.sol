@@ -8,6 +8,7 @@ contract Quote_Registry {
         contractOwner = msg.sender;       
     }
     
+    // _oldOwner / existing owner or any admin can login
     function register(string _quote) public {
         require(ownership(_quote) == address(0),"Quote already registered!!!");
     
@@ -19,19 +20,22 @@ contract Quote_Registry {
         return quoteRegistry[_quote];
     }
 
-    function transfer(string _quote, address _newOwner) public payable {
+    // login with _oldOwner
+    function transfer(string _quote, address _newOwner) public {
         address _oldOwner = ownership(_quote);
         
         require(msg.sender == _oldOwner, "You are not a owner of this quote..");
         
         require(_oldOwner != _newOwner, "New owner is already owner of this quote..");
-        
-        require(msg.value == 0.5 ether,"Fee of 0.5 ether to be paid for transfer of ownership");
-        
-   
-        quoteRegistry[_quote] = _newOwner;
-        
-        _oldOwner.transfer(msg.value);
+    
+        quoteRegistry[_quote] = _newOwner; // Transfer quote ownership from _oldOwner to _newOwner
+    }
+    
+    // login with _newOwner
+    function sendMoney(address _oldOwner) public payable {
+        require(msg.sender != _oldOwner, "You are not a new owner of this quote..");
+        require(msg.value == 10 ether,"Fee of 10 ether to be paid for transfer of ownership");
+        _oldOwner.transfer(msg.value); // Pay 10 ether to _oldOwner from _newOwner
     }
 
     function owner() public view returns (address) {

@@ -10,8 +10,13 @@ contract TestStrings {
     constructor (string message) public {
         str1 = message;
     }
-    function testConcat(string _base) public {
-        str1 = str1.concat(_base);
+    
+    function testConcat1(string _base) public view returns (string) {
+        return str1.concat1(_base);
+    }
+    
+    function testConcat2(string _base) public view returns (string) {
+         return str1.concat2(_base);
     }
 
     function testStrcmp(string _base) public view returns (string) {
@@ -32,5 +37,9 @@ contract TestStrings {
     
     function testStringReverse(string _base) public pure returns (string) {
         return _base.strrev();
-    }    
+    }
+    
+    function resetString() public {
+        str1 = "hello";
+    }
 }
